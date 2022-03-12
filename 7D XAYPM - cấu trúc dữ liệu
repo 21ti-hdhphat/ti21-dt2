@@ -1,0 +1,54 @@
+#include<bits/stdc++.h>
+#define ll long long
+#define be(x, y) ((x < y) ? x : y);
+#define lon(x, y) ((x > y) ? x : y)
+using namespace std;
+ll const A = 1e12;
+
+int m, n, res = 0;
+
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
+    cin >> m >> n;
+    int a[m+1][n+1];
+    vector<int> h(1001, 0), l(1001, n), r(1001, 1);
+
+    for(int i = 1; i <= m; i++)
+        for(int j = 1; j <= n; j++)
+            cin >> a[i][j];
+
+    for(int i = 1; i <= m; i++)
+    {
+        stack<int> st1, st2;
+        for(int j = 1; j <= n; j++)
+        {
+            if(a[i][j] == 1) h[j] = h[j] + 1;
+            else h[j] = 0;
+            while(st1.size() && h[st1.top()] >= h[j]) st1.pop();
+            if(st1.empty()) l[j] = 1;
+            else l[j] = st1.top() + 1;
+            //cout << l[j] << ' ';
+            st1.push(j);//*/
+        }
+
+        for(int j = n; j > 0; j--)
+        {
+            while(st2.size() && h[st2.top()] >= h[j]) st2.pop();
+            if(st2.empty()) r[j] = n;
+            else r[j] = st2.top() - 1;
+
+            st2.push(j);
+        }
+
+        for(int j = 1; j <= n; j++)
+        {
+            res = lon((r[j] - l[j] + 1) * h[j], res);
+        }
+        //*/
+    }
+    //*/
+    cout << res;
+}
