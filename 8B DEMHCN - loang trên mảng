@@ -1,0 +1,108 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int a[202][202], m, n, x = 300, y = 300, x2 = -1, y2 = -1, cnt, cnt1, cnt2, b[202][202];
+int h[] = {4, -1, 0, 1, 0}, v[] = {4, 0, 1, 0, -1};
+void dfs(int i, int j);
+bool hcn();
+bool dac();
+bool rong();
+void nhap();
+
+main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
+    nhap();
+
+    for(int i = 1; i <= m; i++)
+    {
+        for(int j = 1; j <= n; j++)
+        {
+            x = y = 300;
+            x2 = y2 = 0;
+            if(a[i][j] == 1 && b[i][j] == 1)
+            {
+                b[i][j] = 0;
+                dfs(i, j);
+                if(hcn())
+                {
+                    cnt++;
+                    if(dac()) cnt1++;
+                    if(rong()) cnt2++;
+                }
+            }
+        }
+    }
+
+    cout << cnt << '\n' << cnt1 << '\n' << cnt2;
+}
+
+void nhap()
+{
+    cin >> m >> n;
+    for(int i = 1; i <= m; i++)
+        for(int j = 1; j <= n; j++)
+            {
+                cin >> a[i][j];
+                if(a[i][j] == 1) b[i][j] = 1;
+                else b[i][j] = 0;
+            }
+    for(int i = 0; i <= m + 1; i++) a[i][0] = a[i][n+1] = -1;
+    for(int j = 0; j <= n + 1; j++) a[0][j] = a[m+1][j] = -1;
+}
+void dfs(int i, int j)
+{
+    if(x > i) x = i;
+    if(y > j) y = j;
+    if(x2 < i) x2 = i;
+    if(y2 < j) y2 = j;
+    int x3, y3;
+    for(int k = 1; k <= 4; k++)
+    {
+        x3 = i + h[k];
+        y3 = j + v[k];
+        if(a[x3][y3] == 1 && b[x3][y3] == 1)
+        {
+            b[x3][y3] = 0;
+            dfs(x3, y3);
+        }
+    }
+}
+bool hcn()
+{
+    for(int i = x; i <= x2; i++)
+    {
+        if(a[i][y] == 0 || a[i][y2] == 0) return false;
+    }
+    for(int j = y; j <= y2; j++)
+    {
+        if(a[x][j] == 0 || a[x2][j] == 0) return false;
+    }
+    return true;
+}
+bool dac()
+{
+    for(int i = x+1; i <= x2-1; i++)
+    {
+        for(int j = y+1; j <= y2-1; j++)
+        {
+            if(a[i][j] == 0) return false;
+        }
+    }
+    return true;
+}
+bool rong()
+{
+    //cout << x1 << ' ' << y1 << ' ' << x2 << ' ' << y2 << '\n';
+    if(abs(x2 - x) < 2 || abs(y2 - y) < 2) return false;
+    for(int i = x+1; i <= x2-1; i++)
+    {
+        for(int j = y+1; j <= y2-1; j++)
+        {
+            if(a[i][j] == 1) return false;
+        }
+    }
+    return true;
+}
