@@ -1,0 +1,37 @@
+#include<bits/stdc++.h>
+#define ll long long
+#define be(x, y) ((x < y) ? x : y);
+#define lon(x, y) ((x > y) ? x : y)
+using namespace std;
+ll const A = 1e12;
+
+int n, t, res = 0;
+
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
+    cin >> n >> t;
+    vector<int> a(n+1);
+    for(int i = 1; i <= n; i++)
+    {
+        cin >> a[i];
+    }
+    int j = 1, sum = 0, cnt = 0;
+    for(int i = 1; i <= n; i++)
+    {
+        sum += a[i];
+        cnt++;
+        while(sum > t)
+        {
+            sum -= a[j++];
+            cnt--;
+        }
+        if(sum <= t && res < cnt)
+        {
+            res = cnt;
+        }
+    }
+    cout << res << '\n';
+}
