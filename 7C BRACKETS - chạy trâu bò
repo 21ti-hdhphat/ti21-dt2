@@ -1,0 +1,37 @@
+#include<bits/stdc++.h>
+#define ll long long
+#define be(x, y) ((x < y) ? x : y);
+using namespace std;
+ll const A = 1e12;
+
+string s;
+
+main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
+    cin >> s;
+    for(int k = 0; k < s.size(); k++)
+    {
+        vector<int> moNgoac(3, 0), dongNgoac(3, 0);
+        bool tmp = true;
+        for(int i = 0; i < s.size() && tmp; i++)
+        {
+            char c = s[(i+k)%s.size()];
+            if(c == '(') moNgoac[0]++;
+            if(c == '[') moNgoac[1]++;
+            if(c == '{') moNgoac[2]++;
+            if(c == ')') dongNgoac[0]++;
+            if(c == ']') dongNgoac[1]++;
+            if(c == '}') dongNgoac[2]++;
+            if(dongNgoac[0] > moNgoac[0] || dongNgoac[1] > moNgoac[1] || dongNgoac[2] > moNgoac[2]) tmp = false;
+        }
+        if(tmp == true && dongNgoac[0] == moNgoac[0] && dongNgoac[1] == moNgoac[1] && dongNgoac[2] == moNgoac[2])
+        {
+            cout << k+1;
+            return 0;
+        }
+    }
+    cout << -1;
+}
