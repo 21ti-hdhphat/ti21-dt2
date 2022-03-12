@@ -1,0 +1,35 @@
+#include<bits/stdc++.h>
+#define ll long long
+#define be(x, y) ((x < y) ? x : y);
+#define lon(x, y) ((x > y) ? x : y)
+using namespace std;
+
+int n, k, j, cnt = 0;
+string s;
+vector<int> a(300, 0);
+
+queue<int> q;
+
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
+    cin >> n >> k >> s;
+    for(int i = 0; i < n; i++)
+    {
+        q.push(i);
+        a[s[i]]++;
+        while(a[s[i]] > k)
+        {
+            a[s[q.front()]]--;
+            q.pop();
+        }
+        if(q.size() > cnt)
+        {
+            cnt = q.size();
+            j = q.front();
+        }
+    }
+    cout << cnt << ' ' << j + 1;
+}
