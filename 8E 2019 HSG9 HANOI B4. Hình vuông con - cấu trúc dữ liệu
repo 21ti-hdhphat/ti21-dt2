@@ -1,0 +1,45 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define be(x, y) (x < y ? x : y)
+
+int n, m, k, a[1002][1002], dq[100001], top = 0, bot = 1, mins[1002][1002], res = 0;
+void push_top(int x){dq[++top] = x;}
+void pop_top(){--top;}
+void pop_bot(){++bot;}
+void pop(){--top;}
+void clean(){top = 0; bot = 1;}
+main(void)
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    cin >> m >> n >> k;
+    for(int i = 1; i <= m; i++)
+    {
+        clean();
+        for(int j = 1; j <= n; j++)
+        {
+            cin >> a[i][j];
+            while(top-bot+1 > 0 && a[i][dq[top]] >= a[i][j]) pop_top();
+            push_top(j);
+            if(j < k) continue;
+            while(j-k+1 > dq[bot]) pop_bot();
+            mins[i][j] = a[i][dq[bot]];
+        }
+    }
+
+    for(int i = k; i <= m; i++)
+    {
+        for(int j = k; j <= n; j++)
+        {
+            int tmp = mins[i][j];
+            for(int z = i-k+1; z < i; z++)
+            {
+                tmp = be(tmp, mins[z][j]);
+            }
+            if(res < tmp) res = tmp;
+        }
+    }
+    cout << res;
+}
