@@ -1,0 +1,52 @@
+#include<bits/stdc++.h>
+#define ll long long
+#define be(x, y) ((x < y) ? x : y);
+#define lon(x, y) ((x > y) ? x : y)
+using namespace std;
+
+int n, m, vt[100001], bot = 1, top = 0;
+void push(int x){vt[++top] = x;}
+void pop(void){top--;}
+void clean(void){bot = 1; top = 0;}
+vector<vector<int>> a(100001);
+vector<bool> b(100001, false);
+
+void dfs(int x)
+{
+    for(int y : a[x])
+    {
+        if(b[y] == false)
+        {
+            push(y);
+            b[y] = true;
+            dfs(y);
+        }
+    }
+}
+
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
+    cin >> n >> m;
+    for(int i = 1; i <= m; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+        a[u].push_back(v);
+        a[v].push_back(u);
+    }
+    for(int i = 1; i <= n; i++)
+    {
+        if(b[i] == false)
+        {
+            clean();
+            push(i);
+            b[i] = true;
+            dfs(i);
+            for(int i = bot; i <= top; i++) cout << vt[i] << ' ';
+            cout << '\n';
+        }
+    }
+}
