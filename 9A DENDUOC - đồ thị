@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+#define ll long long
+#define lon(x, y) (x > y ? x : y)
+#define be(x, y) (x < y ? x : y)
+using namespace std;
+
+int n, m, s, cnt = 0;
+vector<vector<int>> a(1e5+1);
+vector<bool> b(1e5+1);
+
+void dfs(int x)
+{
+    for(int y : a[x])
+    {
+        if(b[y] == false)
+        {
+            b[y] = true;
+            cnt++;
+            dfs(y);
+        }
+    }
+}
+
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
+    cin >> n >> m >> s;
+    for(int i = 1; i <= m; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+        a[u].push_back(v);
+        a[v].push_back(u);
+    }
+    for(int i = 1; i <= n; i++) b[i] = false;
+    b[s] = true;
+    cnt++;
+    dfs(s);
+    cout << cnt;
+}
