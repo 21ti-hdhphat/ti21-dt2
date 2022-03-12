@@ -1,0 +1,51 @@
+#include<bits/stdc++.h>
+typedef long long ll;
+#define be(x, y) ((x < y) ? x : y);
+#define lon(x, y) ((x > y) ? x : y)
+using namespace std;
+
+int n, m, s, f, st[100001], top = 0, bot = 1;
+bool check = false;
+vector<vector<int>> a(100001);
+vector<bool> b(100001, false);
+
+void dfs(int x)
+{
+    for(int y : a[x])
+    {
+        if(y == f && !check)
+        {
+            st[++top] = f;
+            check = true;
+            for(int i = 1; i <= top; i++) cout << st[i] << ' ';
+            exit(0);
+        }
+        if(!b[y])
+        {
+            b[y] = true;
+            st[++top] = y;
+            dfs(y);
+            --top;
+        }
+    }
+}
+
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
+    cin >> n >> m >> s >> f;
+    for(int i = 1; i <= m; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+        a[u].push_back(v);
+        a[v].push_back(u);
+    }
+    for(int i = 1; i <= n; i++) sort(a[i].begin(), a[i].end());
+    b[s] = true;
+    st[++top] = s;
+    dfs(s);
+    cout << -1;
+}
