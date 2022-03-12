@@ -1,0 +1,34 @@
+#include<bits/stdc++.h>
+#define ll long long
+#define be(x, y) ((x < y) ? x : y);
+#define lon(x, y) ((x > y) ? x : y)
+using namespace std;
+ll const A = 1e12;
+
+int n, cnt, st[100001], top = 0;
+void push(int x){st[++top] = x;}
+void pop(){--top;}
+
+
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
+    cin >> n;
+    vector<int> a(n+1, INT_MIN);
+    for(int i = 1; i <= n; i++)
+    {
+        cin >> a[i];
+    }
+
+    for(int i = 1; i <= n; i++)
+    {
+        while(top > 1 && a[i] > a[st[top]] && a[st[top]] < a[st[top-1]]) pop();
+        push(i);
+    }
+
+    //for(int i = 1; i <= top; i++) cout << st[i] << ' ';
+
+    cout << top;
+}
