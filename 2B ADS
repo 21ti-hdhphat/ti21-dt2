@@ -1,0 +1,52 @@
+#include<bits/stdc++.h>
+typedef long long ll;
+#define be(x, y) ((x < y) ? x : y);
+#define lon(x, y) ((x > y) ? x : y)
+using namespace std;
+
+int n, m, cnt = 0, s;
+vector<vector<int>> e(2001);
+vector<int> b(2001, 0), xoa(2001, false);
+
+void dfs(int x)
+{
+    for(int y : e[x])
+    {
+        if(b[y] > 0 && b[x] != y && xoa[y] == false)
+        {
+            cnt++;
+        }
+        else if(b[y] == 0)
+        {
+            b[y] = x;
+            dfs(y);
+        }
+    }
+    xoa[x] = true;
+}
+
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
+    cin >> n >> m;
+    for(int i = 1; i <= m; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+        e[u].push_back(v);
+        e[v].push_back(u);
+    }
+
+    for(int i = 1; i <= n; i++)
+    {
+        if(b[i] == 0)
+        {
+            b[i] = INT_MAX;
+            dfs(i);
+        }
+    }
+
+    cout << cnt;
+}
