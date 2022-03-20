@@ -1,0 +1,108 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int n, pm, pc, mm, mc, e[101][101];
+vector<vector<int>> em(101), ec(101);
+vector<int> nh(101, 0), ans1, ans2, AT;
+vector<int> bm(101, false), bc(101, false), xoa = bc;
+
+void dfsm(int x)
+{
+    for(int y : em[x])
+    {
+        if(!bm[y])
+        {
+            bm[y] = true;
+            nh[y]++;
+            dfsm(y);
+        }
+    }
+}
+
+void dfsc(int x)
+{
+    for(int y : ec[x])
+    {
+        if(!bc[y])
+        {
+            bc[y] = true;
+            nh[y]++;
+            dfsc(y);
+        }
+    }
+}
+
+void dfs(int x)
+{
+    for(int y : ec[x])
+    {
+        if(y == pc)
+        {
+            if(ans2.size() >= 3)
+            {
+                cout << ans2.size() << '\n';
+                for(int x : ans2) cout << x << '\n';
+                exit(0);
+            }
+        }
+        if(bc[y] == 0 && nh[y] < 2)
+        {
+            bc[y] = x;
+            ans2.push_back(y);
+            dfs(y);
+            ans2.pop_back();
+        }
+    }
+}
+
+bool cmp(int a, int b)
+{
+    if(a == pc || b == pc) return a == pc;
+    else return a < b;
+}
+
+main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
+    cin >> n >> pm >> pc;
+    cin >> mm;
+    for(int i = 1; i <= mm; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+        em[u].push_back(v);
+    }
+    cin >> mc;
+    for(int i = 1; i <= mc; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+        ec[u].push_back(v);
+    }
+
+    bm[pm] = 101;
+    nh[pm] = nh[pc] = 1;
+    dfsm(pm);
+    bc[pc] = 101;
+    dfsc(pc);
+
+    for(int i = 1; i <= 100; i++)
+    {
+        if(nh[i] >= 2)
+        {
+            ans1.push_back(i);
+        }
+        sort(ec[i].begin(), ec[i].end(), cmp);
+        bc[i] = 0;
+    }
+
+    cout << ans1.size() << '\n';
+    for(int x : ans1) cout << x << '\n';
+
+    bc[pc] = INT_MAX;
+    ans2.push_back(pc);
+    dfs(pc);
+    cout << 0;
+}
