@@ -1,0 +1,92 @@
+#include<bits/stdc++.h>
+#define ll long long
+#define be(x, y) ((x < y) ? x : y);
+#define lon(x, y) ((x > y) ? x : y)
+using namespace std;
+
+int n;
+vector<vector<int>> e(3002);
+vector<int> c(3002, 0), d = c;
+vector<int> b(3002, 0), b_d = b;
+bool check = false;
+
+void dfs(int x)
+{
+    for(int y : e[x])
+    {
+        if(check) return;
+        if(b[y] == 0)
+        {
+            b[y] = x;
+            dfs(y);
+        }
+        else if(b[x] != y)
+        {
+            b[y] = x;
+            c[x] = 1;
+            int p = b[x];
+            while(p != x)
+            {
+                c[p] = 1;
+                p = b[p];
+            }
+            check = true;
+            return;
+        }
+    }
+}
+
+void dfs_d(int x)
+{
+    for(int y : e[x])
+    {
+        if(b_d[y] == 0 && c[y] != 1)
+        {
+            b_d[y] = 1;
+            d[y] = d[x] + 1;
+            dfs_d(y);
+        }
+    }
+}
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
+    cin >> n;
+    for(int i = 1; i <= n; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+        e[u].push_back(v);
+        e[v].push_back(u);
+    }
+    b[1] = n+1;
+    dfs(1);
+    for(int i = 1; i <= n; i++)
+    {
+        if(c[i]) continue;
+        for(int y : e[i])
+        {
+            if(c[y] == 1)
+            {
+                if(e[i][-1] != n+1)
+                {
+                    e[n+1].push_back(i);
+                    e[i].push_back(n+1);
+                }
+                break;
+            }
+        }
+    }
+    b_d[n+1] = 1;
+    dfs_d(n+1);
+    for(int i = 1; i <= n; i++)
+    {
+        /*for(int x : e[i])
+            cout << x << ' ';
+        cout << '\n';
+        //*/
+        cout << d[i] << ' ';
+    }
+}
