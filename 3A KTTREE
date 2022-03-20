@@ -1,0 +1,54 @@
+#include<bits/stdc++.h>
+#define ll long long
+using namespace std;
+
+void dfs(int x, vector<vector<int>> &a, vector<bool> &b)
+{
+    for(int y : a[x])
+    {
+        if(b[y] == false)
+        {
+            b[y] = true;
+            dfs(y, a, b);
+        }
+    }
+}
+
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    int t;
+    cin >> t;
+    while(t--)
+    {
+        int n, m;
+        cin >> n >> m;
+        vector<vector<int>> a(n+1);
+        vector<bool> b(n+1, false);
+        for(int i = 1; i <= m; i++)
+        {
+            int u, v;
+            cin >> u >> v;
+            a[u].push_back(v);
+            a[v].push_back(u);
+        }
+        if(m != n-1)
+        {
+            cout << "0\n";
+            continue;
+        }
+        b[1] = true;
+        dfs(1, a, b);
+        bool check = true;
+        for(int i = 1; i <= n; i++)
+        {
+            if(!b[i])
+            {
+                check = false;
+            }
+        }
+        if(check) cout << "1\n";
+        else cout << "0\n";
+    }
+}
