@@ -1,0 +1,72 @@
+#include<bits/stdc++.h>
+#define ll long long
+#define be(x, y) ((x < y) ? x : y);
+#define lon(x, y) ((x > y) ? x : y)
+using namespace std;
+
+int n, m, k, start;
+vector<vector<int>> e(100001);
+vector<int> vis(100001, 0), b(100001, 0);
+vector<int> ans;
+void truyVet(int x);
+void dfs(int x)
+{
+    bool theEnd = true;
+    for(int y : e[x])
+    {
+        if(vis[y] == 0)
+        {
+            vis[y] = x;
+            theEnd = false;
+            dfs(y);
+        }
+    }
+
+    if(theEnd)
+    {
+        truyVet(x);
+        exit(0);
+    }
+}
+
+void truyVet(int x)
+{
+    ans.push_back(x);
+    while(vis[x] != n+1)
+    {
+        x = vis[x];
+        ans.push_back(x);
+    }
+    int n = ans.size();
+    for(int i = 0; i < n/2; i++)
+    {
+        swap(ans[i], ans[n - i - 1]);
+    }
+    for(int y : e[ans[n-1]])
+    {
+        b[y] = 1;
+    }
+    int j = 0;
+    while(b[ans[j]] == 0) j++;
+    cout << n - j << '\n';
+    for(int i = j; i < n; i++)
+        cout << ans[i] << ' ';
+}
+
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
+    cin >> n >> m >> k;
+    for(int i = 1; i <= m; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+        e[u].push_back(v);
+        e[v].push_back(u);
+    }
+
+    vis[1] = n+1;
+    dfs(1);
+}
