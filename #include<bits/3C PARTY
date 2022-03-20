@@ -1,0 +1,48 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int n, depth = 0, cnt = 0;
+vector<vector<int>> e(2001);
+vector<int> b(2001, 0);
+
+void dfs(int x)
+{
+    if(depth > cnt) cnt = depth;
+    for(int y : e[x])
+    {
+        if(b[y]) continue;
+        b[y] = true;
+        depth++;
+        dfs(y);
+        depth--;
+    }
+}
+
+main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
+    cin >> n;
+    for(int u = 1; u <= n; u++)
+    {
+        int v;
+        cin >> v;
+        if(v == -1)
+        {
+            b[u] = -1;
+            continue;
+        }
+        e[u].push_back(v);
+        e[v].push_back(u);
+    }
+    for(int i = 1; i <= n; i++)
+    {
+        if(b[i] != -1) continue;
+        b[i] = n + 1;
+        depth++;
+        dfs(i);
+        depth--;
+    }
+    cout << cnt;
+}
